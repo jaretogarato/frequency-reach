@@ -1,0 +1,32 @@
+Formula for a binomal distribution: Pr(x) = (N!/x!(N-x)!)*Л^x(1-Л)^(N-x)
+
+One view
+
+One controller?
+
+Models
+    Chart           => rails g model Chart exposures:integer percent_per_impression_upper:float percent_per_impression_lower:float
+    PreciseGraph    => rails g model PreciseGraph 
+    AtLeastGraph    => 
+    User input?     => 
+
+
+====================================================================================
+                                    OR
+====================================================================================
+
+Model
+    rails g model Input page_views:integer visitors:integer impressions:integer 
+
+Controller 
+    form (get input)
+    show_data
+
+View
+    Static index with:
+        Header
+        Input
+        Chart
+        Form1
+        Form2
+
