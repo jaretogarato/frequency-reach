@@ -18,14 +18,43 @@ const points = () => {
   let unique_visitors = 700000;
   let impressions = 1000000;
   let pov = impressions / page_views; // percentage of views;
+  let avg = page_views / unique_visitors;
+  let lower = avg;
+  let upper = avg;
+
+  function fact(x) {
+    if(x==0) {
+      return 1;
+    }
+    return x * fact(x-1);
+  }
+
+  // function run(number) {
+  //   alert(fact(parseInt(number, 10)));
+  // }
+
+  // { fact(20) }
 
   // do the math
+  // lower
+  // iterate 15 times, using i as index
+  // =(FACT(D10)/(FACT(D16)*FACT(D10-D16)))*G9^D16*(1-G9)^(D10-D16)
+  // simple
+  // Math.pow(7, 2);    // 49
+  let i = 0;
+  for (i = 0; i < 20; i++) {
+    // fact(lower)/(fact(i)*fact(lower-i)))*pov^i*(1-pov)^(lower-i)
+    fact(lower)/(fact(i)*fact(lower-i)) * Math.pow(pov, i) * Math.pow((1-pov), (lower-i));
+  }
+
+
+  // upper
+
   // stick numbers in an array
   // let the graphs have access to the numbers
 }
 
-class GridExampleDividedNumber extends Component {
-
+class TopView extends Component {
   render() {
     return (
       <div className="App">
@@ -38,18 +67,18 @@ class GridExampleDividedNumber extends Component {
           <Grid columns={2} divided>
             <Grid.Row>
               <Grid.Column>
-                <Form />
+                <Form />  {/* form  */}
               </Grid.Column>
               <Grid.Column>
-                <GraphPrecise />
+                <GraphPrecise /> {/* precise graph  */}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <Chart />
+                <Chart /> {/* chart  */}
               </Grid.Column>
               <Grid.Column>
-                <GraphAtLeast />
+                <GraphAtLeast /> {/* at-least graph  */}
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -59,4 +88,4 @@ class GridExampleDividedNumber extends Component {
   }
 }
 
-export default GridExampleDividedNumber;
+export default TopView;
