@@ -1,5 +1,6 @@
 class Api::DisplayController < ApplicationController
   def index
+    // render json 
   end
 
   def get_input

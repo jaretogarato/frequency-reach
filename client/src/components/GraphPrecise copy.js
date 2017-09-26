@@ -16,19 +16,20 @@ const preciseData = [
 
 class GraphPrecise extends Component {
   state = { uniqueVisitors: 10000, impressions: 1000000, pageViews: 5000000 };
+
  //componentDidMount
 
  //componentWillReceiveProps
-  stats = () => {
-    const { stats } = this.props;
-  }
+  // stats = () => {
+  //   const { stats } = this.props;
+  // }
 
   render() {
-    // let { stats } = this.state;
+     let { stats } = this.props;
 
-    console.log(`graphprecise-pageviews ${this.stats.pageViews}`);
-    console.log(`graphprecise-impressions ${this.stats.impressions}`);
-    console.log(`graphprecise-unique-visitors ${this.stats.uniqueVisitors}`);
+    console.log(`graphprecise-pageviews ${stats.pageViews}`);
+    console.log(`graphprecise-impressions ${stats.impressions}`);
+    console.log(`graphprecise-unique-visitors ${stats.uniqueVisitors}`);
 
     let page_views = this.props.stats.pageViews;
     let unique_visitors = this.props.stats.impressions;
@@ -53,9 +54,6 @@ class GraphPrecise extends Component {
       else {
         return (num * fact(num - 1));
       }
-    }
-    function fact(num) {
-      return num
     }
 
     let i = 0;
