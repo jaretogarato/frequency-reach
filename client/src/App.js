@@ -5,7 +5,7 @@ import Chart from './components/Chart';
 // import NoMatch from './components/NoMatch';
 import Form from './components/Form';
 import GraphPrecise from './components/GraphPrecise';
-// import GraphAtLeast from './components/GraphAtLeast';
+import GraphAtLeast from './components/GraphAtLeast';
 
 import 'semantic-ui-css/semantic.min.css';
 import logo from './logo.png';
@@ -39,7 +39,7 @@ class TopView extends Component {
               </Grid.Column>
               <Grid.Column>
                 <h1>GraphAtLeast Goes Here</h1>
-                {/* <GraphAtLeast /> */}
+                <GraphAtLeast />
               </Grid.Column>
             </Grid.Row>
           </Grid>

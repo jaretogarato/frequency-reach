@@ -4,7 +4,7 @@ import { Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-const preciseData = [
+const dummyData = [
   {name: '1 Imp', uv: 4000, pv: 3800},
   {name: '2 Imp', uv: 5000, pv: 3800},
   {name: '3 Imp', uv: 2000, pv: 1900},
@@ -15,7 +15,7 @@ const preciseData = [
 ];
 
 class GraphPrecise extends Component {
-  state = { uniqueVisitors: 10000, impressions: 1000000, pageViews: 5000000 };
+  // state = { uniqueVisitors: 10000, impressions: 1000000, pageViews: 5000000 };
  //componentDidMount
 
  //componentWillReceiveProps
@@ -26,27 +26,41 @@ class GraphPrecise extends Component {
   render() {
     // let { stats } = this.state;
 
-    console.log(`graphprecise-pageviews ${this.stats.pageViews}`);
-    console.log(`graphprecise-impressions ${this.stats.impressions}`);
-    console.log(`graphprecise-unique-visitors ${this.stats.uniqueVisitors}`);
+    console.log(`graphprecise-pageviews ${this.props.pageViews}`);
+    console.log(`graphprecise-impressions ${this.props.impressions}`);
+    console.log(`graphprecise-unique-visitors ${this.props.uniqueVisitors}`);
 
-    let page_views = this.props.stats.pageViews;
-    let unique_visitors = this.props.stats.impressions;
-    let impressions = this.props.stats.uniqueVisitors;
-    let pov = (impressions / page_views); // percentage of views
-    let avg = (page_views / unique_visitors); // views per avg visitor
+    let pageViews = this.props.pageViews;
+    let uniqueVisitors = this.props.uniqueVisitors;
+    let impressions = this.props.impressions;
+    let pov = (impressions / pageViews); // percentage of views
+    let avg = 0;
+
+    if (isNaN(avg)){
+      avg = 0;
+    } else {
+      avg = pageViews / uniqueVisitors;
+    }
+    // onClick={ roll !== 0 ? () => this.updateScore(name) : f => f }
     let upper = Math.ceil(avg); // upper (likely) extent for margin of error
     let lower = Math.floor(avg); // lower (likely) extent for margin of error
-    console.log(avg);
-    console.log(upper);
-    console.log(lower);
-    console.log("---------------------");
+
+    console.log("--------vvvvv------");
+    console.log(`avg: ${avg}`);
+    console.log(`isNan?: ${isNaN(avg)}`);
+    console.log(`upper: ${upper}`);
+    console.log(`lower: ${lower}`);
+    console.log("--------^^^^^--------");
     let upperPoint = 0;
     let lowerPoint = 0;
     let chartData = [];
 
     function fact(num) {
-      if (num < 0)
+      if (num == Infinity || num == "Infinity")
+        return 0
+      else if (num == "NaN" || isNaN(num))
+        return 0
+      else if (num < 0)
         return -1;
       else if (num == 0)
         return 1;
@@ -54,27 +68,30 @@ class GraphPrecise extends Component {
         return (num * fact(num - 1));
       }
     }
-    function fact(num) {
-      return num
-    }
+    // function fact(num) {
+    //   return num
+    // }
 
     let i = 0;
     for (i = 0; i < 15; i++) {
       // fact(lower)/(fact(i)*fact(lower-i)))*pov^i*(1-pov)^(lower-i)
-      upperPoint = fact(upper)/(fact(i)*fact(upper-i)) * Math.pow(pov, i) * Math.pow((1-pov), (upper-i));
-      lowerPoint = fact(lower)/(fact(i)*fact(lower-i)) * Math.pow(pov, i) * Math.pow((1-pov), (lower-i));
-      // chartData[i] = [`name: ${i} Imp, uv: ${upperPoint}, pv: ${lowerPoint}`]
-      chartData.push({name: `${i} Imp`, uv: `${upperPoint}`, pv: `${lowerPoint}` });
+      upperPoint = parseFloat( (fact(upper)/(fact(i)*fact(upper-i))) * Math.pow(pov, i) * Math.pow((1-pov), (upper-i)) );
+      lowerPoint = parseFloat( (fact(lower)/(fact(i)*fact(lower-i))) * Math.pow(pov, i) * Math.pow((1-pov), (lower-i)) );
+
+      if(isNaN(upperPoint)) upperPoint = 0;
+      if(isNaN(lowerPoint)) lowerPoint = 0;
+
+      let chartObject = {'name': `${i} Imps`, 'uv': upperPoint, 'pv': lowerPoint} ;
+      chartData.push(chartObject);
     }
-    //console.log(`Precise Data: ${JSON.stringify(preciseData)}`);
-    //console.log(`Chart Data: ${JSON.stringify(chartData)}`);
+    console.log(`Dummy Data: ${JSON.stringify(dummyData)}`);
+    console.log(`Chart Data: ${JSON.stringify(chartData)}`);
     // console.log(`In Graph Precise ${JSON.stringify(this.props.stats)}`);
 
 
     return(
       <Container>
         <h1>Graph Precise Component</h1>
-        {/* <LineChart width={600} height={300} data={preciseData} */}
         <LineChart width={600} height={300} data={chartData}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}>
           <XAxis dataKey="name"/>
@@ -91,10 +108,12 @@ class GraphPrecise extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const stats = state.stats;
-  // const stats = [ ...new Set(stats.map(stat => stat.value))]
-  return { stats };
+const mapStateToProps = state => {
+  return {
+    impressions: state.stats.impressions,
+    pageViews: state.stats.pageViews,
+    uniqueVisitors: state.stats.uniqueVisitors
+  }
 }
 
 export default connect(mapStateToProps)(GraphPrecise);

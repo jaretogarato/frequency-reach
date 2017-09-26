@@ -5,15 +5,13 @@ import { updateStats } from '../actions/stats';
 // page_views impressions unique_visitors
 
 class Form extends React.Component {
-  state = { pageViews: 0,uniqueVisitors: 0, impressions: 0 }
+  state = { pageViews: 5000000, uniqueVisitors: 800000, impressions: 1100000 }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value }, () => this.test());
-    //console.log(e.target.value)
-    //console.log(e.target.name)
     // this.props.dispatch(updateStats(e.target.name, e.target.value))
     // this.props.dispatch({type: 'UPDATE_STATS', name: e.target.name, value: e.target.value })
-    // I think I want to update page views, impressions, and unique visitors
+    // Update page views, impressions, and unique visitors
 
     e.preventDefault();
     // // get name from input
@@ -44,14 +42,17 @@ class Form extends React.Component {
           <h3><strong>Site Statistics:</strong></h3>
           <span>Page Views: <input
             value={this.state.pageViews}
+            placeholder={5000000}
             name="pageViews"
             onChange={this.onChange} /></span><br />
           <span>Unique Visitors: <input
             value={this.state.uniqueVisitors}
+            placeholder={800000}
             name="uniqueVisitors"
             onChange={this.onChange} /></span><br />
           <span>Impressions: <input
             value={this.state.impressions}
+            placeholder={1000000}
             name="impressions"
             onChange={this.onChange} /></span><br />
         </form>

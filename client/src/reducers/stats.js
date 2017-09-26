@@ -1,7 +1,7 @@
 const stats = (state = {
   pageViews: 1000000,
-  uniqueVisitors: 10000,
-  impressions: 300000
+  uniqueVisitors: 200000,
+  impressions: 500000
 }, action) => {
   switch(action.type) {
     case 'UPDATE_STATS':
@@ -12,8 +12,6 @@ const stats = (state = {
       //     return action.stat
       //   return stat
       // })
-    case 'DELETE_ITEM':
-      return state.filter( stat => stat.id !== action.id )
     default:
       return state;
   }
