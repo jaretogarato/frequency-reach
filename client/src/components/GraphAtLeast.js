@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { LineChart, AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const dummyData = [
   {name: '1 Imp', uv: 4000, pv: 3800},
@@ -53,7 +53,7 @@ class GraphAtLeast extends Component {
     console.log("--------^^^^^--------");
     let upperPoint = 0;
     let lowerPoint = 0;
-    let chartData = [];
+    let chart2Data = [];
 
     function fact(num) {
       if (num == Infinity || num == "Infinity")
@@ -68,9 +68,6 @@ class GraphAtLeast extends Component {
         return (num * fact(num - 1));
       }
     }
-    // function fact(num) {
-    //   return num
-    // }
 
     let i = 0;
     for (i = 0; i < 15; i++) {
@@ -81,26 +78,27 @@ class GraphAtLeast extends Component {
       if(isNaN(upperPoint)) upperPoint = 0;
       if(isNaN(lowerPoint)) lowerPoint = 0;
 
-      let chartObject = {'name': `${i} Imps`, 'uv': upperPoint, 'pv': lowerPoint} ;
-      chartData.push(chartObject);
+      let rangeArray = [upperPoint, lowerPoint];
+      let chartObject = {'name': i, 'range': rangeArray};
+      chart2Data.push(chartObject);
     }
     console.log(`Dummy Data: ${JSON.stringify(dummyData)}`);
-    console.log(`Chart Data: ${JSON.stringify(chartData)}`);
-
+    console.log(`Chart 2 Data: ${JSON.stringify(chart2Data)}`);
 
     return(
       <Container>
-        <h1>Graph Precise Component</h1>
-        <LineChart width={600} height={300} data={chartData}
+        <h1>Graph "At Least" Component</h1>
+        <AreaChart width={600} height={300} data={chart2Data}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}>
           <XAxis dataKey="name"/>
           <YAxis/>
           <CartesianGrid strokeDasharray="3 3"/>
           <Tooltip/>
           <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}}/>
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-        </LineChart>
+          <Area type="monotone" dataKey="range" stroke="#8884d8" activeDot={{r: 8}}/>
+          {/* <ComposedDataDecorator dataKey="range" /> */}
+
+        </AreaChart>
         {/* { stats && <Button fluid basic onClick={this.clearFilter}>Clear Filter</Button> } */}
       </Container>
     )

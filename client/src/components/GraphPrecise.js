@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const dummyData = [
   {name: '1 Imp', uv: 4000, pv: 3800},
@@ -68,9 +68,6 @@ class GraphPrecise extends Component {
         return (num * fact(num - 1));
       }
     }
-    // function fact(num) {
-    //   return num
-    // }
 
     let i = 0;
     for (i = 0; i < 15; i++) {
@@ -81,13 +78,12 @@ class GraphPrecise extends Component {
       if(isNaN(upperPoint)) upperPoint = 0;
       if(isNaN(lowerPoint)) lowerPoint = 0;
 
-      let chartObject = {'name': `${i} Imps`, 'uv': upperPoint, 'pv': lowerPoint} ;
+      let chartObject = {'name': i+1, 'upper': upperPoint, 'lower': lowerPoint} ;
       chartData.push(chartObject);
     }
     console.log(`Dummy Data: ${JSON.stringify(dummyData)}`);
     console.log(`Chart Data: ${JSON.stringify(chartData)}`);
     // console.log(`In Graph Precise ${JSON.stringify(this.props.stats)}`);
-
 
     return(
       <Container>
@@ -99,9 +95,10 @@ class GraphPrecise extends Component {
           <CartesianGrid strokeDasharray="3 3"/>
           <Tooltip/>
           <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}}/>
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="upper" stroke="#8884d8" activeDot={{r: 8}}/>
+          <Line type="monotone" dataKey="lower" stroke="#82ca9d" />
         </LineChart>
+        <h3>Impressions</h3>
         {/* { stats && <Button fluid basic onClick={this.clearFilter}>Clear Filter</Button> } */}
       </Container>
     )

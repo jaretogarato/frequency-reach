@@ -38,7 +38,6 @@ class TopView extends Component {
                 <h1>Chart goes here</h1>
               </Grid.Column>
               <Grid.Column>
-                <h1>GraphAtLeast Goes Here</h1>
                 <GraphAtLeast />
               </Grid.Column>
             </Grid.Row>
