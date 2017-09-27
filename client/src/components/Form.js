@@ -6,7 +6,7 @@ import { Form } from 'semantic-ui-react';
 // page_views impressions unique_visitors
 
 class InputForm extends React.Component {
-  state = { pageViews: 5000000, uniqueVisitors: 800000, impressions: 1100000 }
+  state = { pageViews: 5000000, uniqueVisitors: 800000, impressions: 2700000 }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value }, () => this.test());
@@ -81,7 +81,7 @@ class InputForm extends React.Component {
             />
           </Form.Field>
           <Form.Field>
-            <label>Monthly Unique Visitors</label>
+            <label>Impressions Purchased</label>
             <input
               value={this.state.impressions}
               placeholder={1000000}

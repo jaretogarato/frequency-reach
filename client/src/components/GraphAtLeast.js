@@ -4,15 +4,15 @@ import { Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { LineChart, AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-const dummyData = [
-  {name: '1 Imp', uv: 4000, pv: 3800},
-  {name: '2 Imp', uv: 5000, pv: 3800},
-  {name: '3 Imp', uv: 2000, pv: 1900},
-  {name: '4 Imp', uv: 2780, pv: 2600},
-  {name: '5 Imp', uv: 1890, pv: 1750},
-  {name: '6 Imp', uv: 2390, pv: 2200},
-  {name: '7 Imp', uv: 3490, pv: 3400},
-];
+// const dummyData = [
+//   {name: '1 Imp', uv: 4000, pv: 3800},
+//   {name: '2 Imp', uv: 5000, pv: 3800},
+//   {name: '3 Imp', uv: 2000, pv: 1900},
+//   {name: '4 Imp', uv: 2780, pv: 2600},
+//   {name: '5 Imp', uv: 1890, pv: 1750},
+//   {name: '6 Imp', uv: 2390, pv: 2200},
+//   {name: '7 Imp', uv: 3490, pv: 3400},
+// ];
 
 class GraphAtLeast extends Component {
   // state = { uniqueVisitors: 10000, impressions: 1000000, pageViews: 5000000 };
@@ -69,11 +69,20 @@ class GraphAtLeast extends Component {
       }
     }
 
-    let i = 0;
-    for (i = 0; i < 15; i++) {
-      // fact(lower)/(fact(i)*fact(lower-i)))*pov^i*(1-pov)^(lower-i)
+    let upperStore = 0;
+    let lowerStore = 0;
+
+    for (let i = 0; i < 15; i++) {
       upperPoint = parseFloat( (fact(upper)/(fact(i)*fact(upper-i))) * Math.pow(pov, i) * Math.pow((1-pov), (upper-i)) );
       lowerPoint = parseFloat( (fact(lower)/(fact(i)*fact(lower-i))) * Math.pow(pov, i) * Math.pow((1-pov), (lower-i)) );
+
+      if( i > 0 ) {
+        upperStore = upperStore + upperPoint;
+        lowerStore = lowerStore + lowerPoint;
+
+        upperPoint = 1 - upperStore;
+        lowerPoint = 1 - upperPoint;
+      }
 
       if(isNaN(upperPoint)) upperPoint = 0;
       if(isNaN(lowerPoint)) lowerPoint = 0;
@@ -82,7 +91,7 @@ class GraphAtLeast extends Component {
       let chartObject = {'name': i, 'range': rangeArray};
       chart2Data.push(chartObject);
     }
-    console.log(`Dummy Data: ${JSON.stringify(dummyData)}`);
+    // console.log(`Dummy Data: ${JSON.stringify(dummyData)}`);
     console.log(`Chart 2 Data: ${JSON.stringify(chart2Data)}`);
 
     const toPercent = (decimal, fixed = 0) => {
