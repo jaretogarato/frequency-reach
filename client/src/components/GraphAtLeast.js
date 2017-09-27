@@ -81,7 +81,7 @@ class GraphAtLeast extends Component {
         lowerStore = lowerStore + lowerPoint;
 
         upperPoint = 1 - upperStore;
-        lowerPoint = 1 - upperPoint;
+        lowerPoint = 1 - lowerStore;
       }
 
       if(isNaN(upperPoint)) upperPoint = 0;
