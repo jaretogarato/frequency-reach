@@ -85,19 +85,39 @@ class GraphAtLeast extends Component {
     console.log(`Dummy Data: ${JSON.stringify(dummyData)}`);
     console.log(`Chart 2 Data: ${JSON.stringify(chart2Data)}`);
 
+    const toPercent = (decimal, fixed = 0) => {
+	    return `${(decimal * 100).toFixed(fixed)}%`;
+    };
+
     return(
       <Container>
         <h1>Graph "At Least" Component</h1>
-        <AreaChart width={600} height={300} data={chart2Data}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+        <AreaChart
+          width={600}
+          height={300}
+          data={chart2Data}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          stackOffset="expand"
+        >
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
           <XAxis dataKey="name"/>
-          <YAxis/>
+          <YAxis tickFormatter={toPercent} />
           <CartesianGrid strokeDasharray="3 3"/>
           <Tooltip/>
           <Legend />
-          <Area type="monotone" dataKey="range" stroke="#8884d8" activeDot={{r: 8}}/>
-          {/* <ComposedDataDecorator dataKey="range" /> */}
-
+          <Area
+            type="monotone"
+            dataKey="range"
+            stroke="#8884d8"
+            fillOpacity={1}
+            fill="url(#colorUv)"
+            activeDot={{r: 8}}
+          />
         </AreaChart>
         {/* { stats && <Button fluid basic onClick={this.clearFilter}>Clear Filter</Button> } */}
       </Container>

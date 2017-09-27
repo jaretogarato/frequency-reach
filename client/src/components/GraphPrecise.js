@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { LineChart, AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const dummyData = [
   {name: '1 Imp', uv: 4000, pv: 3800},
@@ -78,27 +78,47 @@ class GraphPrecise extends Component {
       if(isNaN(upperPoint)) upperPoint = 0;
       if(isNaN(lowerPoint)) lowerPoint = 0;
 
-      let chartObject = {'name': i+1, 'upper': upperPoint, 'lower': lowerPoint} ;
+      let rangeArray = [upperPoint, lowerPoint];
+      let chartObject = {'name': i, 'range': rangeArray};
       chartData.push(chartObject);
     }
     console.log(`Dummy Data: ${JSON.stringify(dummyData)}`);
     console.log(`Chart Data: ${JSON.stringify(chartData)}`);
-    // console.log(`In Graph Precise ${JSON.stringify(this.props.stats)}`);
+
+    const toPercent = (decimal, fixed = 0) => {
+	    return `${(decimal * 100).toFixed(fixed)}%`;
+    };
 
     return(
       <Container>
         <h1>Graph Precise Component</h1>
-        <LineChart width={600} height={300} data={chartData}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+        <AreaChart
+          width={600}
+          height={300}
+          data={chartData}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          stackOffset="expand"
+        >
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
           <XAxis dataKey="name"/>
-          <YAxis/>
+          <YAxis tickFormatter={toPercent} />
           <CartesianGrid strokeDasharray="3 3"/>
           <Tooltip/>
           <Legend />
-          <Line type="monotone" dataKey="upper" stroke="#8884d8" activeDot={{r: 8}}/>
-          <Line type="monotone" dataKey="lower" stroke="#82ca9d" />
-        </LineChart>
-        <h3>Impressions</h3>
+          <Area
+            type="monotone"
+            dataKey="range"
+            stroke="#8884d8"
+            fillOpacity={1}
+            fill="url(#colorUv)"
+            activeDot={{r: 8}}
+          />
+        </AreaChart>
         {/* { stats && <Button fluid basic onClick={this.clearFilter}>Clear Filter</Button> } */}
       </Container>
     )
